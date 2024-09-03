@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import idGenerator from "../helpers/tokenGenerator.js";
+import bcrypt from "bcrypt";
 import tokenGenerator from "../helpers/tokenGenerator.js";
 
 const usersSchema = mongoose.Schema({
@@ -22,10 +22,19 @@ const usersSchema = mongoose.Schema({
     type: String,
     default: tokenGenerator(),
   },
-  confirmado: {
+  confirmed: {
     type: Boolean,
     default: false,
   },
+});
+
+// Encrypt the password before the user is saved in the DB
+usersSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 // This model, created from the usersSchema, represents the "User" collection in MongoDB and provides methods
