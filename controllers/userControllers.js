@@ -1,6 +1,7 @@
 // -----------------------------------------------------------------//
 // -----------------------------------------------------------------//
 import User from "../models/UsersSchema.js";
+import JWTgenerator from "../helpers/JWTGenerator.js";
 
 // -----------------------------------------------------------------//
 
@@ -53,7 +54,7 @@ const userConfirmation = async (req, res) => {
 };
 // -----------------------------------------------------------------//
 const userLogin = async (req, res) => {
-  const { email } = req.body;
+  const { email, password } = req.body;
 
   // Search for the user with their email in the DB and check if the user exists
   const user = await User.findOne({ email });
@@ -68,7 +69,18 @@ const userLogin = async (req, res) => {
     return res.status(404).json({ msg: error.message });
   }
 
-  res.json({ msg: "from userLogin" });
+  // Check if the password from the form and the password in DB  are the same
+  if (await user.passwordVerification(password)) {
+    res.json({
+      userName: user.userName,
+      email: user.email,
+      jwt: JWTgenerator(user._id),
+      id: user._id,
+    });
+  } else {
+    const error = new Error("Incorrect Password");
+    return res.status(404).json({ msg: error.message });
+  }
 };
 
 // -----------------------------------------------------------------//

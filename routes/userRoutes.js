@@ -1,6 +1,7 @@
 // -----------------------------------------------------------------//
 // -----------------------------------------------------------------//
 import express from "express";
+import checkAuth from "../middleware/authMiddleware.js";
 import {
   registerNewUser,
   userProfile,
@@ -16,6 +17,8 @@ const userRoutes = express.Router();
 userRoutes.post("/", registerNewUser);
 userRoutes.post("/user-login", userLogin);
 userRoutes.get("/user-confirmation/:token", userConfirmation);
-userRoutes.get("/user-profile", userProfile);
+
+// PRIVATE AREA
+userRoutes.get("/user-profile", checkAuth, userProfile);
 
 export default userRoutes;
