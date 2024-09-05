@@ -14,7 +14,7 @@ const checkAuth = async (req, res, next) => {
       const decoded = jsonWebToken.verify(jwt, process.env.JWT_SECRET);
 
       req.userProfile = await Users.findById(decoded.id).select(
-        "-password -token -confirmed"
+        "-password -token -confirmed -__v"
       );
       return next();
     } catch (error) {

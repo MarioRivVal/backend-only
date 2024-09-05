@@ -1,7 +1,9 @@
 // -----------------------------------------------------------------//
 // -----------------------------------------------------------------//
 import User from "../models/UsersSchema.js";
+import Users from "../models/UsersSchema.js";
 import JWTgenerator from "../helpers/JWTGenerator.js";
+import tokenGenerator from "../helpers/tokenGenerator.js";
 
 // -----------------------------------------------------------------//
 
@@ -29,7 +31,7 @@ const registerNewUser = async (req, res) => {
 // -----------------------------------------------------------------//
 
 const userProfile = (req, res) => {
-  res.json({ msg: "desde userProfile" });
+  res.json(req.userProfile);
 };
 
 // -----------------------------------------------------------------//
@@ -82,6 +84,44 @@ const userLogin = async (req, res) => {
     return res.status(404).json({ msg: error.message });
   }
 };
+// -----------------------------------------------------------------//
+
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  // Search the user in the DB using the email sending from the form
+  const userExists = await Users.findOne({ email });
+
+  if (!userExists) {
+    const error = new Error("This user does not exists");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  try {
+    userExists.token = tokenGenerator();
+    await userExists.save();
+    res.json(userExists);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // -----------------------------------------------------------------//
-export { registerNewUser, userProfile, userConfirmation, userLogin };
+const tokenConfirmation = async (req, res) => {
+  res.json({ msg: "desde tokenConfirmation" });
+};
+// -----------------------------------------------------------------//
+const newPassword = async (req, res) => {
+  res.json({ msg: "desde newPassword" });
+};
+// -----------------------------------------------------------------//
+
+export {
+  registerNewUser,
+  userProfile,
+  userConfirmation,
+  userLogin,
+  forgotPassword,
+  tokenConfirmation,
+  newPassword,
+};
