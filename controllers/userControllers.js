@@ -90,16 +90,16 @@ const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   // Search the user in the DB using the email sending from the form
-  const userExists = await Users.findOne({ email });
+  const foundUser = await Users.findOne({ email });
 
-  if (!userExists) {
+  if (!foundUser) {
     const error = new Error("This user does not exists");
     return res.status(404).json({ msg: error.message });
   }
 
   try {
-    userExists.token = tokenGenerator();
-    await userExists.save();
+    foundUser.token = tokenGenerator();
+    await foundUser.save();
     res.json(userExists);
   } catch (error) {
     console.log(error);
@@ -108,11 +108,37 @@ const forgotPassword = async (req, res) => {
 
 // -----------------------------------------------------------------//
 const tokenConfirmation = async (req, res) => {
-  res.json({ msg: "desde tokenConfirmation" });
+  const { token } = req.params;
+
+  const foundUser = await User.findOne({ token });
+  if (foundUser) {
+    res.status(200).json({ msg: "User found" });
+  } else {
+    const error = new Error("Invalid Token");
+    return res.status(404).json({ msg: error.message });
+  }
 };
 // -----------------------------------------------------------------//
 const newPassword = async (req, res) => {
-  res.json({ msg: "desde newPassword" });
+  const { password } = req.body;
+  const { token } = req.params;
+
+  const foundUser = await User.findOne({ token });
+
+  if (!foundUser) {
+    const error = new Error("An error has occurred");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  console.log(foundUser);
+  try {
+    foundUser.token = null;
+    foundUser.password = password;
+    await foundUser.save();
+    res.json({ msg: "Your password has been changed" });
+  } catch (error) {
+    console.log(error);
+  }
 };
 // -----------------------------------------------------------------//
 

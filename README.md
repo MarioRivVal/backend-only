@@ -1,9 +1,18 @@
-# 🛠️ Backend Practice Project
+# 🛠️ OnlyBackend
+
+<div style="text-align:center">
+<img src="https://github.com/MarioRivVal/netneodev-portfolio-v1/blob/main/public/img/logos/nodejs.png?raw=true" width="50" height="50" alt="nodejs" />
+<img src="https://github.com/MarioRivVal/netneodev-portfolio-v1/blob/main/public/img/logos/express.png?raw=true" width="50" height="50" alt="express" />
+<img src="https://github.com/MarioRivVal/netneodev-portfolio-v1/blob/main/public/img/logos/mongodb.png?raw=true" width="50" height="50" alt="mongodb" />
+</div>
+
+##
 
 This repository contains a backend project designed to deepen my understanding
 of backend development. The project is built using **Node.js** and various
 modern technologies to implement secure user authentication and management
-functionalities. The project is currently in progress.
+functionalities. The project has been completed but is easily scalable for
+future extensions.
 
 ## 🚀 Technologies Used
 
@@ -18,8 +27,6 @@ functionalities. The project is currently in progress.
 - **bcrypt**: A library for hashing passwords to enhance security.
 - **JSON Web Tokens (JWT)**: Used for securely transmitting information between
   parties as a JSON object.
-- **Nodemailer**: A module to send emails, used here for user confirmation
-  emails.
 - **Postman**: A tool used to test API endpoints during development.
 
 ## ✨ Features
@@ -29,15 +36,19 @@ functionalities. The project is currently in progress.
   storing in the database.
 - **JWT Authentication**: User sessions are managed using JWT for secure and
   stateless authentication.
+- **Protected Routes**: Middleware verifies JWT to protect private user routes.
 - **Email Confirmation**: Upon registration, users receive a confirmation email
-  to activate their account.
+  with a verification token.
+- **Password Reset**: Users can reset their password if forgotten via email
+  verification.
 - **API Testing with Postman**: All API endpoints are tested using Postman to
   ensure they work as expected.
 
 ## 🚧 Project Status
 
-This project is still in progress. Future plans include:
+The project has been completed and provides a strong foundation and is easily
+scalable for further features.
 
-- Implementing additional user roles and permissions.
-- Enhancing error handling and validation.
-- Adding more detailed API documentation.
+## 🔑License
+
+This project is licensed under the netNeo_web License.
